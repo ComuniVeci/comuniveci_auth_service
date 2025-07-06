@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.env
+*.sqlite3
+*.log
+*.db
+.mypy_cache/
+.cache/
+*.egg-info/
+dist/
+build/
+poetry.lock
