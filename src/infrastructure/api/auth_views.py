@@ -14,6 +14,11 @@ def register(user: UserCreateSchema):
     repository = get_user_repository()
     try:
         new_user = register_user(user.model_dump(), repository)
-        return {"message": "Usuario registrado correctamente", "user_id": new_user["_id"]}
+        return {
+            "message": "Usuario registrado correctamente", 
+            "user_id": str(new_user["_id"]),
+            "username": new_user["username"],
+            "email": new_user["email"]
+        }
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
