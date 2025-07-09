@@ -19,7 +19,8 @@ def register(user: UserCreateSchema):
             "message": "Usuario registrado correctamente", 
             "user_id": str(new_user["_id"]),
             "username": new_user["username"],
-            "email": new_user["email"]
+            "email": new_user["email"],
+            "is_admin": new_user.get("is_admin", False)
         }
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
