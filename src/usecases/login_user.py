@@ -5,5 +5,8 @@ def login_user(credentials: dict, repository: UserRepositoryInterface):
     user = repository.find_by_email(credentials["email"])
     if not user or not verify_password(credentials["password"], user["hashed_password"]):
         raise ValueError("Credenciales inválidas")
-    token = create_access_token({"sub": str(user["_id"])})
+    token = create_access_token({
+        "sub": str(user["_id"]),
+        "is_admin": user.get("is_admin", False)
+    })
     return {"access_token": token, "token_type": "bearer"}
