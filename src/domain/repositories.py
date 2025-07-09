@@ -8,3 +8,8 @@ class UserRepositoryInterface(ABC):
     @abstractmethod
     def find_by_email(self, email: str):
         pass
+
+    
+    @abstractmethod
+    def find_by_id(self, user_id: str) -> dict | None:
+        pass

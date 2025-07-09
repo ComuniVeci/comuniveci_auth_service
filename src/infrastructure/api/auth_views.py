@@ -1,9 +1,10 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from src.domain.schemas import UserCreateSchema, UserLoginSchema
 from src.infrastructure.persistence.get_repository import get_user_repository
 from src.usecases.register_user import register_user
 from src.usecases.login_user import login_user
 from src.utils import create_access_token
+from src.infrastructure.api.dependencies import get_current_user
 
 auth_router = APIRouter()
 
@@ -32,3 +33,12 @@ def login(credentials: UserLoginSchema):
         return login_user(credentials.model_dump(), repository)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(e))
+
+@auth_router.get("/me")
+def get_profile(current_user: dict = Depends(get_current_user)):
+    return {
+        "id": str(current_user["_id"]),
+        "username": current_user["username"],
+        "email": current_user["email"],
+        "is_admin": current_user.get("is_admin", False)
+    }

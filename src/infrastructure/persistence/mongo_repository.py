@@ -12,3 +12,7 @@ class MongoUserRepository(UserRepositoryInterface):
 
     def find_by_email(self, email):
         return self.collection.find_one({"email": email})
+    
+    def find_by_id(self, user_id: str) -> dict | None:
+        from bson import ObjectId
+        return self.collection.find_one({"_id": ObjectId(user_id)})
