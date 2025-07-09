@@ -3,6 +3,7 @@ from src.domain.schemas import UserCreateSchema, UserLoginSchema
 from src.infrastructure.persistence.get_repository import get_user_repository
 from src.usecases.register_user import register_user
 from src.usecases.login_user import login_user
+from src.utils import create_access_token
 
 auth_router = APIRouter()
 
@@ -15,11 +16,11 @@ def register(user: UserCreateSchema):
     repository = get_user_repository()
     try:
         new_user = register_user(user.model_dump(), repository)
+        token = create_access_token({"sub": str(new_user["_id"]), "is_admin": new_user.get("is_admin", False)})
         return {
             "message": "Usuario registrado correctamente", 
-            "user_id": str(new_user["_id"]),
-            "username": new_user["username"],
-            "email": new_user["email"]
+            "access_token": token,
+            "token_type": "bearer"
         }
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
