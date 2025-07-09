@@ -1,10 +1,6 @@
-from passlib.context import CryptContext
 from src.domain.entities import User
+from src.utils import hash_password
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-def hash_password(password: str):
-    return pwd_context.hash(password)
 
 def register_user(user_data, repository):
     existing_user = repository.find_by_email(user_data["email"])
