@@ -175,25 +175,21 @@ Endpoint:
 
 http://localhost:8002/metrics
 
+Además de las métricas estándar (tiempos de respuesta, conteos por endpoint, tamaño de payload, etc.), se han agregado métricas personalizadas para observar eventos relevantes del sistema:
+
 Métricas incluidas:
 
-- http_requests_total: número total de solicitudes por endpoint, método y código de estado.
+- auth_login_success_total: cantidad total de logins exitosos.
 
-- http_request_duration_seconds: duración de solicitudes por endpoint y método.
+- auth_login_failure_total: cantidad total de intentos de login fallidos.
 
-- http_request_size_bytes: tamaño de las solicitudes entrantes.
+- auth_register_success_total: cantidad total de registros exitosos.
 
-- http_response_size_bytes: tamaño de las respuestas enviadas.
+- auth_register_failure_total: cantidad total de errores al registrar.
 
-- http_requests_inprogress: cantidad de peticiones en curso.
+- auth_me_requests_total: cantidad total de solicitudes exitosas al endpoint /api/auth/me.
 
-- http_request_duration_highr_seconds: histograma de latencia detallado (sin etiquetas por endpoint).
-
-- python_gc_*: métricas internas del recolector de basura de Python.
-
-- python_info: información de versión e implementación del entorno Python.
-
-Estas métricas permiten integrar el servicio con sistemas como Prometheus y Grafana para monitoreo y alertas. (Aún no implementado).
+Recomendación: Usa Prometheus para recolectarlas y Grafana para visualizarlas.
 
 ---
 
