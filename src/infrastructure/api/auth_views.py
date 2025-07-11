@@ -3,6 +3,7 @@ from src.domain.schemas import UserCreateSchema, UserLoginSchema
 from src.infrastructure.persistence.get_repository import get_user_repository
 from src.usecases.register_user import register_user
 from src.usecases.login_user import login_user
+from src.usecases.get_all_users import get_all_users
 from src.utils import create_access_token
 from src.infrastructure.api.dependencies import get_current_user
 from src.infrastructure.metrics import me_requests_total
@@ -65,3 +66,15 @@ def get_profile(current_user: dict = Depends(get_current_user)):
         "email": current_user["email"],
         "is_admin": current_user.get("is_admin", False)
     }
+
+@auth_router.get(
+        "/users",
+        summary="Obtener una lista de usuarios registrados sin exponer datos sensibles",
+        response_description="Lista de usuarios registrados"
+        )
+def list_users(repository = Depends(get_user_repository)):
+    """
+    Devuelve una lista con todos los usuarios registrados.
+    La información sensible como contraseña no se retorna en la lista.
+    """
+    return get_all_users(repository)
