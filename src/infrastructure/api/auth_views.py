@@ -5,6 +5,7 @@ from src.usecases.register_user import register_user
 from src.usecases.login_user import login_user
 from src.utils import create_access_token
 from src.infrastructure.api.dependencies import get_current_user
+from src.infrastructure.metrics import me_requests_total
 
 auth_router = APIRouter()
 
@@ -57,6 +58,7 @@ def get_profile(current_user: dict = Depends(get_current_user)):
     Devuelve información del usuario autenticado (extraída del token).
     Este endpoint requiere un token válido en el header Authorization.
     """
+    me_requests_total.inc()
     return {
         "id": str(current_user["_id"]),
         "username": current_user["username"],

@@ -1,10 +1,12 @@
 from src.domain.entities import User
 from src.utils import hash_password
+from src.infrastructure.metrics import register_success_total, register_failure_total
 
 
 def register_user(user_data, repository):
     existing_user = repository.find_by_email(user_data["email"])
     if existing_user:
+        register_failure_total.inc()
         raise ValueError("El correo ya está registrado")
 
     hashed_password = hash_password(user_data["password"])
@@ -15,6 +17,7 @@ def register_user(user_data, repository):
         is_admin=user_data.get("is_admin", False)
     )
 
+    register_success_total.inc()
     return repository.create({
         "email": user.email,
         "username": user.username,
