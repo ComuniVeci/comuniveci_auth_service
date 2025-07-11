@@ -16,3 +16,6 @@ class MongoUserRepository(UserRepositoryInterface):
     def find_by_id(self, user_id: str) -> dict | None:
         from bson import ObjectId
         return self.collection.find_one({"_id": ObjectId(user_id)})
+    
+    def find_all(self) -> list[dict]:
+        return list(self.collection.find({}, {"password": 0, "hashed_password": 0}))
