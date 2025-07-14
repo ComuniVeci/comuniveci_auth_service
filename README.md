@@ -1,19 +1,19 @@
 # 🔐 ComuniVeci – Auth Service
-Este microservicio se encarga de la autenticación y gestión básica de usuarios para el sistema ComuniVeci. Provee funcionalidades para:
+Este microservicio se encarga de la autenticación, gestión de usuarios y generación de tokens seguros para el sistema distribuido ComuniVeci. Forma parte de una arquitectura basada en microservicios e interactúa con el frontend y otros servicios como admin-service.
 
-- Registro de nuevos usuarios
+---
 
-- Inicio de sesión y generación de token JWT
+## 🚀 Funcionalidades principales
 
-- Verificación de sesión y rol (usuario/admin)
+- ✅ Registro de nuevos usuarios
+- 🔑 Inicio de sesión y generación de token JWT
+- 🔍 Verificación de sesión actual (endpoint /me)
+- 🧑‍💻 Detección de rol administrador (is_admin)
+- 🔐 Tokens seguros, firmados y con expiración
+- 📋 Exposición de usuarios registrados sin datos sensibles
+- 📈 Métricas Prometheus para monitoreo
+- 📄 Documentación Swagger automática
 
-- Tokens seguros y expirables
-
-- Protección de rutas con autenticación
-
-- Documentación Swagger automática
-
-- Exposición de métricas Prometheus para monitoreo
 ---
 
 # ⚙️ Requisitos
@@ -77,6 +77,13 @@ poetry run uvicorn src.main:app --reload --port 8002
 # 🔄 Endpoints disponibles
 
 Todos los endpoints están bajo el prefijo /api/auth
+
+| Método | Endpoint  | Descripción                                        |
+| ------ | --------- | -------------------------------------------------- |
+| POST   | /register | Registra un nuevo usuario                          |
+| POST   | /login    | Inicia sesión y genera token JWT                   |
+| GET    | /me       | Devuelve datos del usuario autenticado             |
+| GET    | /users    | Devuelve lista de usuarios sin exponer contraseñas |
 
 ### 1. POST /api/auth/register
 
@@ -145,6 +152,9 @@ Authorization: Bearer <token>
 }
 ```
 
+#### 4. GET /api/auth/users
+Retorna una lista de usuarios (solo id, email, username, is_admin). No requiere autenticación, se usa internamente por admin-service.
+
 ---
 
 # 🧪 Tests
@@ -156,11 +166,6 @@ Desde la raíz del proyecto de tests:
 ```bash
 poetry run pytest -v --json-report --json-report-file=report.json
 poetry run python generate_report.py
-```
-___IMPORTANTE:___ Es mejor cambiar la variable de entorno TESTS para realizar las pruebas en otra base de datos
-
-```bash
-TESTING=true
 ```
 
 El reporte PDF se genera como TestReport.pdf

@@ -4,6 +4,22 @@ Historial de cambios para el microservicio de autenticación en ComuniVeci.
 
 ---
 
+## [1.1.0] – 2025-07-13
+
+### ✨ Nuevas funcionalidades
+
+- 👥 Nuevo endpoint GET /api/auth/users:
+  - Devuelve lista de usuarios registrados sin exponer contraseñas.
+  - Se usa desde el admin-service.
+  - Incluye: id, email, username, is_admin.
+
+- 🧪 Mejora del sistema de testing:
+  - Eliminación automática de usuarios creados en los tests.
+  - Separación de tests frontend y backend con marcadores pytest.
+  - Limpieza de base de datos unificada vía fixture de tracking.
+
+---
+
 ## [1.0.0] – 2025-07-10
 
 ### 🚀 Funcionalidad inicial completa:
